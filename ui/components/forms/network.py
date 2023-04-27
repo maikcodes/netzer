@@ -5,8 +5,10 @@ from tkinter import ttk
 result_table = None
 
 
-def scan_network():
-    scan_result = network_scanner.scan()
+def scan_network(network, subnet_mask):
+
+    scan_result = network_scanner.scan(network, subnet_mask)
+    # test_data = [[['192.168.1.1', '', '', 'tcp', '80', 'tcpwrapped', 'open', '', '', 'syn-ack', '', '8', '']], [['192.168.1.33', '', '', 'tcp', '80', 'http', 'closed', '', '', 'reset', '', '3', '']], [['192.168.1.36', '', '', 'tcp', '80', 'http', 'closed', '', '', 'reset', '', '3', '']], [['192.168.1.38', '', '', 'tcp', '80', 'http', 'closed', '', '', 'reset', '', '3', '']]]
 
     refresh_table(result_table, scan_result)
 
@@ -34,11 +36,25 @@ def create_form_panel(parent):
     subnet_entry.pack()
 
     # create the scan button
-    scan_button = tk.Button(form_panel, text="Run Scan",
-                            command=lambda: scan_network())
+    scan_button = tk.Button(
+        form_panel, text="Run Scan",
+        command=lambda: scan_network(
+            network_entry.get(),
+            subnet_entry.get()
+        )
+    )
     scan_button.pack()
 
     return form_panel
+
+
+def on_select(event):
+    # get the selected item
+    item = event.widget.selection()[0]
+    # get the values of the selected item
+    values = event.widget.item(item, 'values')
+    # print the values of the selected item
+    print(values)
 
 
 def create_table_panel(parent):
@@ -78,6 +94,8 @@ def create_table_panel(parent):
     table.heading('version', text='version', anchor=tk.CENTER)
     table.heading('conf', text='conf', anchor=tk.CENTER)
     table.heading('cpe', text='cpe', anchor=tk.CENTER)
+
+    table.bind('<<TreeviewSelect>>', on_select)
 
     global result_table
     result_table = table

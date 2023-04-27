@@ -1,22 +1,8 @@
 from colorama import init, Fore, Back, Style
-import csv
-from datetime import datetime
+from .midlewawre import mask_to_bits
 import nmap
-import os
 
 init(autoreset=True)
-
-
-def get_str_datetime(current_datetime=datetime.now()):
-    return f'{datetime.date(current_datetime)}_{current_datetime.hour}-{current_datetime.minute}-{current_datetime.second}'
-
-
-def get_save_data_path(directory_name='scan'):
-    root_path = os.getcwd()
-    data_path = os.path.join(root_path, 'src', 'data')
-    save_all_scan_path = os.path.join(
-        data_path, f'{directory_name}_{get_str_datetime()}')
-    return save_all_scan_path
 
 
 def gateway_scanner(network, subnet_mask):
@@ -33,11 +19,16 @@ def gateway_scanner(network, subnet_mask):
     return host_list
 
 
-def scan():
+def scan(network, subnet_mask):
 
+    # host_to_scan = {
+    #     'network': '192.168.1.0',
+    #     'subnet_mask': '24'
+    # }
+    
     host_to_scan = {
-        'network': '192.168.1.0',
-        'subnet_mask': '24'
+        'network': network,
+        'subnet_mask': mask_to_bits(subnet_mask)
     }
 
     host_list = gateway_scanner(
@@ -73,4 +64,4 @@ def scan():
         print(final_csv_data)
 
     print('xxx', xxx)
-    return(xxx)
+    return (xxx)
