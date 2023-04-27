@@ -21,29 +21,30 @@ def refresh_table(table, data):
 
 
 def create_form_panel(parent):
-    form_panel = tk.Frame(parent, bg='blue', width=800, height=400)
+    form_panel = tk.Frame(parent, bg='blue', width=800, height=400, borderwidth=50, background='#212d40')
 
+    # network_frame = tk.LabelFrame(form_panel, text='Network scan form', padx=20, pady=20, width=300, height=300)
+    # network_frame.pack(padx=20, pady=20)
     # create the network label and entry
-    network_label = tk.Label(form_panel, text="Network:")
-    network_label.pack()
+
+    network_label = tk.Label(form_panel, text="Network:", background='#212d40', fg='white')
+    network_label.pack(side='left', padx=2, pady=10)
     network_entry = tk.Entry(form_panel)
-    network_entry.pack()
+    network_entry.pack(side='left', padx=10, pady=10)
 
-    # create the subnet mask label and entry
-    subnet_label = tk.Label(form_panel, text="Subnet Mask:")
-    subnet_label.pack()
+    subnet_label = tk.Label(form_panel, text="Subnet Mask:", background='#212d40', fg='white')
+    subnet_label.pack(side='left', padx=2, pady=10)
     subnet_entry = tk.Entry(form_panel)
-    subnet_entry.pack()
+    subnet_entry.pack(side='left', padx=10, pady=10)
 
-    # create the scan button
     scan_button = tk.Button(
         form_panel, text="Run Scan",
         command=lambda: scan_network(
             network_entry.get(),
             subnet_entry.get()
         )
-    )
-    scan_button.pack()
+    , background='#4dff88')
+    scan_button.pack(side='left')
 
     return form_panel
 
@@ -58,7 +59,7 @@ def on_select(event):
 
 
 def create_table_panel(parent):
-    table_panel = tk.Frame(parent, bg='red', width=800, height=100)
+    table_panel = tk.Frame(parent, bg='red', width=800, height=100, background='#212d40')
     table = ttk.Treeview(table_panel)
 
     # define the columns
@@ -96,6 +97,7 @@ def create_table_panel(parent):
     table.heading('cpe', text='cpe', anchor=tk.CENTER)
 
     table.bind('<<TreeviewSelect>>', on_select)
+    table.pack(fill='both', padx=10, pady=10)
 
     global result_table
     result_table = table
