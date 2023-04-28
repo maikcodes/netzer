@@ -4,7 +4,7 @@ import os
 import tkinter
 
 SIDE_MENU_WIDTH = 150
-SIDE_MENU_BACKGROUND_COLOR = '#212d40'
+SIDE_MENU_BACKGROUND_COLOR = '#121721'
 BUTTON_BACKGROUND_COLOR = '#364156'
 BUTTON_FONT_COLOR = '#ffffff'
 ICON_SIZE = 40
@@ -24,7 +24,7 @@ def menu_icon(icon_url):
     return ImageTk.PhotoImage(Image.open(icon_url).resize((ICON_SIZE, ICON_SIZE), Image.ANTIALIAS))
 
 
-def start(window, notebook, network_tab, host_tab, home_tab):
+def start(window, notebook, network_tab, host_tab, home_tab, ports_list_tab):
     # icon1 = menu_icon(icon_url='ui/img/icons/home.png')
     # icon2 = menu_icon(icon_url='ui/img/icons/network.png')
     # icon3 = menu_icon(icon_url='ui/img/icons/host.png')
@@ -40,9 +40,12 @@ def start(window, notebook, network_tab, host_tab, home_tab):
                           command=lambda: notebook.select(network_tab))
     button3 = menu_button(frame=side_menu, text='Host', icon='',
                           command=lambda: notebook.select(host_tab))
+    button4 = menu_button(frame=side_menu, text='Ports list', icon='',
+                          command=lambda: notebook.select(ports_list_tab))
 
     button1.pack(side='top', padx=10, pady=10)
     button2.pack(side='top', padx=10, pady=10)
     button3.pack(side='top', padx=10, pady=10)
+    button4.pack(side='top', padx=10, pady=10)
 
     side_menu.pack_propagate(False)
