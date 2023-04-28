@@ -1,43 +1,61 @@
 import json
+from .middleware import on_select
 import tkinter as tk
-from tkinter import ttk
-
-result_table = None
-table_panel = None
+from tkinter import Frame, Scrollbar
+from tkinter.ttk import Treeview
 
 
-def create_ports_list_table(parent):
-    table_panel = tk.Frame(parent, bg='#212d40')
-    table = ttk.Treeview(table_panel, padding='5', height='200')
+def configure_table(table, panel):
+    table_structure(table)
+    table_on_select(table)
+    table_scrollbar_XY(table, panel)
+    table.pack(padx='10', pady='10')
 
+
+def table_on_select(table):
+    table.bind('<<TreeviewSelect>>', on_select)
+
+
+def table_scrollbar_XY(table, panel):
+    vertical_scrollbar = Scrollbar(
+        panel, orient='vertical', command=table.yview
+    )
+    table.configure(yscrollcommand=vertical_scrollbar.set)
+    vertical_scrollbar.pack(side='right', fill='y')
+
+    horizontal_scrollbar = Scrollbar(
+        panel, orient='horizontal', command=table.xview
+    )
+    table.configure(xscrollcommand=horizontal_scrollbar.set)
+
+
+def table_structure(table):
     table['columns'] = ('#', 'port', 'protocol', 'name', 'description')
 
-    anchor = tk.NW
+    table.column('#0', width='0', stretch=tk.NO)
+    table.column('#', anchor='center', width='10')
+    table.column('port', anchor='center', width='10')
+    table.column('protocol', anchor='center', width='20')
+    table.column('name', anchor='center')
+    table.column('description', anchor='center')
 
-    table.column('#', width=50, anchor='center', stretch=False)
-    table.column('port', width=30, anchor='w')
-    table.column('protocol', anchor=anchor, width='30')
-    table.column('name', width=30, anchor="w", stretch=False)
-    table.column('description', width=30, anchor="w", stretch=False)
-
+    table.heading('#0', text='', anchor='center')
     table.heading('#', text='#')
     table.heading('port', text='Port')
     table.heading('protocol', text='Protocol')
     table.heading('name', text='Name')
     table.heading('description', text='Description')
 
-    vertical_scrollbar = ttk.Scrollbar(
-        table_panel, orient='vertical', command=table.yview
-    )
-    table.configure(yscrollcommand=vertical_scrollbar.set)
-    vertical_scrollbar.pack(side="right", fill="y")
 
-    horizontal_scrollbar = ttk.Scrollbar(
-        table_panel, orient='horizontal', command=table.xview
-    )
-    table.configure(xscrollcommand=horizontal_scrollbar.set)
-    horizontal_scrollbar.pack(side="bottom", fill="x")
-    table.pack(padx=30, pady=40)
+def create_table(panel):
+    table = Treeview(panel, height='200')
+    configure_table(table=table, panel=panel)
+    return table
+
+
+def create_ports_list_table(parent):
+    table_panel = Frame(parent, bg='#212d40')
+    table = create_table(panel=table_panel)
 
     with open('ui/components/forms/ports.json') as f:
         data = json.load(f)
@@ -46,11 +64,11 @@ def create_ports_list_table(parent):
 
     row_index = 1
     for key, value in data.items():
-        parts = key.split("/")
+        parts = key.split('/')
         port_number = parts[0]
         protocol = parts[1]
-        name = value["name"]
-        description = value.get("description", "")
+        name = value['name']
+        description = value.get('description', '')
 
         result.append([row_index, port_number, protocol, name, description])
         row_index += 1
@@ -58,14 +76,10 @@ def create_ports_list_table(parent):
     for port in result:
         table.insert(parent='', index='end', iid=f'{port}', values=port)
 
-    global result_table
-    result_table = table
-    result_table.pack(fill='both')
+    table.pack(fill='both')
     return table_panel
 
 
 def create(tab):
-    print('table', result_table)
     table_panel = create_ports_list_table(tab)
-    print('table', result_table)
     table_panel.pack(side='bottom', fill='both', expand=True)
