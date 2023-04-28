@@ -1,9 +1,12 @@
 {
     "cSpell.words": [
         "ancho",
+        "borderwidth",
         "padx",
         "pady",
         "pantalla",
-        "ventana"
+        "ventana",
+        "xscrollcommand",
+        "yscrollcommand"
     ]
 }

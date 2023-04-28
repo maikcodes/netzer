@@ -1,5 +1,5 @@
 from colorama import init, Fore, Back, Style
-from .midlewawre import mask_to_bits
+from .middleware import mask_to_bits
 import nmap
 
 init(autoreset=True)
@@ -19,13 +19,13 @@ def gateway_scanner(network, subnet_mask):
     return host_list
 
 
-def scan(network, subnet_mask):
+def scan(network, subnet_mask, ports):
 
     # host_to_scan = {
     #     'network': '192.168.1.0',
     #     'subnet_mask': '24'
     # }
-    
+
     host_to_scan = {
         'network': network,
         'subnet_mask': mask_to_bits(subnet_mask)
@@ -41,10 +41,10 @@ def scan(network, subnet_mask):
     csv_keys = ['host', 'hostname', 'hostname_type', 'protocol', 'port', 'name',
                 'state', 'product', 'extrainfo', 'reason', 'version', 'conf', 'cpe']
 
-    xxx = []
+    scan_result = []
 
     for host, state in host_list:
-        nm.scan(hosts=host, ports='80')
+        nm.scan(hosts=host, ports=ports)
         print(
             f'\n{Style.BRIGHT}{Fore.CYAN}host: {host} ({state})\ncsv:\n{nm.csv()}')
         csv_data = nm.csv().split('\r\n')
@@ -60,8 +60,8 @@ def scan(network, subnet_mask):
         for line in csv_data:
             final_csv_data.append(line.split(';'))
 
-        xxx.append(final_csv_data)
+        scan_result.append(final_csv_data)
         print(final_csv_data)
 
-    print('xxx', xxx)
-    return (xxx)
+    print('scan_result', scan_result)
+    return (scan_result)

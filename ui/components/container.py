@@ -1,4 +1,4 @@
-from .forms import home, host, network
+from .forms import home, host, network, ports_list
 from . import side_menu
 from tkinter import ttk
 
@@ -12,7 +12,7 @@ def configure_container():
             "layout": [("Notebook.tab", {"sticky": "nswe"})],
         },
         "TNotebook": {
-            "configure": {"background": "yellow"}
+            "configure": {"borderwidth":0},
         }
     })
     notebook_style.theme_use('dark_mode')
@@ -38,14 +38,20 @@ def create_forms(notebook):
     host.create_form_panel(host_tab)
     host.create_table_panel(host_tab)
     notebook.add(host_tab, text='Host')
-    host.create(host_tab)
+    host.start(host_tab)
 
-    return home_tab, network_tab, host_tab
+    ports_list_tab = ttk.Frame(notebook)
+    ports_list.create_ports_list_table(ports_list_tab)
+    notebook.add(ports_list_tab, text='Ports list')
+    ports_list.create(ports_list_tab)
+
+    return home_tab, network_tab, host_tab, ports_list_tab
 
 
 def start(window):
     notebook = ttk.Notebook(window)
     configure_container()
-    home_tab, network_tab, host_tab = create_forms(notebook)
-    side_menu.start(window, notebook, network_tab, host_tab, home_tab)
+    home_tab, network_tab, host_tab, ports_list_tab = create_forms(notebook)
+    side_menu.start(window, notebook, network_tab,
+                    host_tab, home_tab, ports_list_tab)
     notebook.pack(expand=True, fill='both')
