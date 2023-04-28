@@ -1,5 +1,5 @@
 from .middleware import on_select
-from scanner import network_scanner
+from scanner import host_scanner
 import tkinter as tk
 from tkinter import ttk, Entry, Button, Frame, Label, Scrollbar
 
@@ -7,192 +7,21 @@ result_table = None
 table_panel = None
 
 
-def scan_network(network, subnet_mask, ports):
-
-    # scan_result = network_scanner.scan(network, subnet_mask, ports)
-    test_data = [
-        [
-            ['999.999.777.777', '', '', 'tcp', '80', 'tcp wrapped', 'open',
-                'this is some large text', '', 'syn-ack', '', '8', '']
-        ],
-        [
-            ['192.168.1.33', '', '', 'tcp', '80', 'http', 'closed',
-                '', 'this is some large text', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.1', '', '', 'tcp', '21', 'ftp',
-                'filtered', '', '', 'no-response', '', '3', ''],
-            ['192.168.1.1', '', '', 'tcp', '23', 'telnet',
-                'filtered', '', '', 'no-response', '', '3', ''],
-            ['192.168.1.1', '', '', 'tcp', '53', 'domain', 'open', 'dnsmasq',
-                '', 'syn-ack', '2.45', '10', 'cpe a:thekelleys:dnsmasq:2.45'],
-            ['192.168.1.1', '', '', 'tcp', '80', 'tcpwrapped',
-                'open', '', '', 'syn-ack', '', '8', ''],
-            ['192.168.1.1', '', '', 'tcp', '443', 'tcpwrapped',
-                'open', '', '', 'syn-ack', '', '8', '']
-        ],
-        [
-            ['192.168.1.34', '', '', 'tcp', '1467', 'csdmbase',
-                'open', '', '', 'syn-ack', '', '3', '']
-        ],
-        [
-            ['192.168.1.36', '', '', 'tcp', '135', 'msrpc', 'open',
-                'Microsoft Windows RPC', '', 'syn-ack', '', '10', 'cpe:/o:microsoft:windows'],
-            ['192.168.1.36', '', '', 'tcp', '137', 'netbios-ns',
-                'filtered', '', '', 'no-response', '', '3', ''],
-            ['192.168.1.36', '', '', 'tcp', '139', 'netbios-ssn', 'open',
-                'Microsoft Windows netbios-ssn', '', 'syn-ack', '', '10', 'cpe:/o:microsoft:windows'],
-            ['192.168.1.36', '', '', 'tcp', '445', 'microsoft-ds',
-                'open', '', '', 'syn-ack', '', '3', '']
-        ],
-        [
-            ['192.168.1.36', '', '', 'tcp', '80', 'http', 'closed',
-                '', '', 'reset', 'this is some large text', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-        [
-            ['192.168.1.38', '', '', 'tcp', '80', 'http',
-                'closed', '', '', 'reset', '', '3', '']
-        ],
-    ]
-
-    refresh_table(result_table, test_data)
+def scan_hosts(network, ports):
+    scan_result = host_scanner.scan(network, ports)
+    refresh_table(result_table, scan_result)
 
 
 def refresh_table(table, data):
     global table_panel
     row_index = 1
 
-    for host in data:
-        for port in host:
-            port.insert(0, row_index)
-            table.insert(
-                parent='', index='end', iid=f'{host}_{port}', values=port
-            )
-            row_index += 1
+    for port in data:
+        port.insert(0, row_index)
+        table.insert(
+            parent='', index='end', iid=f'{port}', values=port
+        )
+        row_index += 1
 
 
 def create_form_panel(parent):
@@ -206,13 +35,6 @@ def create_form_panel(parent):
     network_entry = Entry(form_panel, font='18')
     network_entry.pack(side='left', padx=10, pady=10)
 
-    subnet_label = Label(
-        form_panel, text="Subnet Mask:", background='#212d40', fg='white', font='15'
-    )
-    subnet_label.pack(side='left', padx=2, pady=10)
-    subnet_entry = Entry(form_panel, font='18')
-    subnet_entry.pack(side='left', padx=10, pady=10)
-
     ports_label = Label(
         form_panel, text="Ports:", background='#212d40', fg='white', font='15'
     )
@@ -222,7 +44,7 @@ def create_form_panel(parent):
 
     scan_button = Button(
         form_panel, text="SCAN",
-        command=lambda: scan_network(network_entry.get(), subnet_entry.get(), ports_entry.get()), background='#4dff88', font='20'
+        command=lambda: scan_hosts(network_entry.get(), ports_entry.get()), background='#4dff88', font='20'
     )
     scan_button.pack(side='left')
 
