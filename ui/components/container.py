@@ -12,13 +12,10 @@ def configure_container():
             "layout": [("Notebook.tab", {"sticky": "nswe"})],
         },
         "TNotebook": {
-            "configure": {"borderwidth":0},
+            "configure": {"borderwidth": 0},
         }
     })
     notebook_style.theme_use('dark_mode')
-# notebook_style.configure('TNotebook.Tab', padding=[0, 0], font=('TkDefaultFont', 0), borderwidth=0)
-
-# notebook = ttk.Notebook(main_window, style='TNotebook')
 
 
 def create_forms(notebook):
@@ -32,7 +29,7 @@ def create_forms(notebook):
     network.create_form_panel(network_tab)
     network.create_table_panel(network_tab)
     notebook.add(network_tab, text='Network')
-    network.create(network_tab)
+    network.start(network_tab)
 
     host_tab = ttk.Frame(notebook)
     host.create_form_panel(host_tab)
