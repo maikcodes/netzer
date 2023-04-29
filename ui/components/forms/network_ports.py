@@ -9,8 +9,8 @@ result_table = None
 table_panel = None
 
 
-def scan_network(network, subnet_mask):
-    scan_result = network_scanner.scan(network, subnet_mask)
+def scan_network(network, subnet_mask, ports):
+    scan_result = network_scanner.scan(network, subnet_mask, ports)
     refresh_table(result_table, scan_result)
 
 
@@ -19,11 +19,12 @@ def refresh_table(table, data):
     row_index = 1
 
     for host in data:
-        host.insert(0, row_index)
-        table.insert(
-            parent='', index='end', iid=f'{host[0]}', values=host
-        )
-        row_index += 1
+        for port in host:
+            port.insert(0, row_index)
+            table.insert(
+                parent='', index='end', iid=f'{host}_{port}', values=port
+            )
+            row_index += 1
 
 
 def create_form_panel(parent):
@@ -53,7 +54,7 @@ def create_form_panel(parent):
 
     scan_button = Button(
         form_panel, text='SCAN',
-        command=lambda: scan_network(network_entry.get(), subnet_entry.get()), background='#4dff88', font='20'
+        command=lambda: scan_network(network_entry.get(), subnet_entry.get(), ports_entry.get()), background='#4dff88', font='20'
     )
     scan_button.pack(side='left')
 
@@ -86,21 +87,43 @@ def table_scrollbar_XY(table, panel):
 
 
 def table_structure(table):
-    table['columns'] = ('index', 'host', 'state', 'os', 'os_version')
+    table['columns'] = (
+        'index', 'host', 'hostname', 'hostname_type', 'protocol', 'port', 'name',
+        'state', 'product', 'extrainfo', 'reason', 'version', 'conf', 'cpe'
+    )
 
     table.heading('#0', text='', anchor='center')
     table.heading('index', text='N', anchor='center')
     table.heading('host', text='Host', anchor='center')
+    table.heading('hostname', text='Hostname', anchor='center')
+    table.heading('hostname_type', text='Hostname type', anchor='center')
+    table.heading('protocol', text='Protocol', anchor='center')
+    table.heading('port', text='Port', anchor='center')
+    table.heading('name', text='Name', anchor='center')
     table.heading('state', text='State', anchor='center')
-    table.heading('os', text='Operative system', anchor='center')
-    table.heading('os_version', text='Version', anchor='center')
+    table.heading('product', text='Product', anchor='center')
+    table.heading('extrainfo', text='Extrainfo', anchor='center')
+    table.heading('reason', text='Reason', anchor='center')
+    table.heading('version', text='Version', anchor='center')
+    table.heading('conf', text='Conf', anchor='center')
+    table.heading('cpe', text='CPE', anchor='center')
 
     table.column('#0', width='0', stretch=tk.NO)
     table.column('index', anchor='center', width='30')
     table.column('host', anchor='center', width='100')
-    table.column('state', anchor='center', width='30')
-    table.column('os', anchor='center', width='200')
-    table.column('os_version', anchor='center')
+    table.column('hostname', anchor='center')
+    table.column('hostname_type', anchor='center')
+    table.column('protocol', anchor='center', width='60')
+    table.column('port', anchor='center', width='30')
+    table.column('name', anchor='center')
+    table.column('state', anchor='center', width='50')
+    table.column('product', anchor='center', stretch=tk.YES, width='200')
+    table.column('extrainfo', anchor='center')
+    table.column('reason', anchor='center')
+    table.column('version', anchor='center')
+    table.column('conf', anchor='center')
+    table.column('cpe', anchor='center')
+    table.columnconfigure(6, minsize=200)
 
 
 def create_table(panel):

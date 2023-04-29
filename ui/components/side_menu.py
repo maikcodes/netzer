@@ -24,10 +24,15 @@ def menu_icon(icon_url):
     return ImageTk.PhotoImage(Image.open(icon_url).resize((ICON_SIZE, ICON_SIZE), Image.ANTIALIAS))
 
 
-def start(window, notebook, network_tab, host_tab, home_tab, ports_list_tab):
+def start(window, notebook, tabs):
     # icon1 = menu_icon(icon_url='ui/img/icons/home.png')
     # icon2 = menu_icon(icon_url='ui/img/icons/network.png')
     # icon3 = menu_icon(icon_url='ui/img/icons/host.png')
+
+    home_tab = tabs['home']
+    network_tab = tabs['network']
+    host_tab = tabs['host']
+    ports_list_tab = tabs['ports_list']
 
     window.update()
     side_menu = tkinter.Frame(window, bg=SIDE_MENU_BACKGROUND_COLOR,

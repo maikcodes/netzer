@@ -42,13 +42,20 @@ def create_forms(notebook):
     notebook.add(ports_list_tab, text='Ports list')
     ports_list.create(ports_list_tab)
 
-    return home_tab, network_tab, host_tab, ports_list_tab
+    tabs = {
+        'home': home_tab,
+        'network': network_tab,
+        'host': host_tab,
+        'ports_list': ports_list_tab
+    }
+
+    return tabs
 
 
 def start(window):
     notebook = ttk.Notebook(window)
     configure_container()
-    home_tab, network_tab, host_tab, ports_list_tab = create_forms(notebook)
-    side_menu.start(window, notebook, network_tab,
-                    host_tab, home_tab, ports_list_tab)
+    tabs = create_forms(notebook)
+
+    side_menu.start(window, notebook, tabs)
     notebook.pack(expand=True, fill='both')
