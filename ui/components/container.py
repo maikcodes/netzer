@@ -1,4 +1,4 @@
-from .forms import home, host, network, ports_list
+from .forms import host, network, ports_list
 from . import side_menu
 from tkinter import ttk
 
