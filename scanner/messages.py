@@ -1,5 +1,4 @@
 from colorama import Back, Fore, init, Style
-import pprint
 
 init(autoreset=True)
 
@@ -10,10 +9,18 @@ def print_process(message):
     )
 
 
-def print_result(message):
-    print(f'\n{Style.BRIGHT}{Fore.CYAN}{message}')
+def print_processing(message):
+    print(f'\n{Style.BRIGHT}{Fore.LIGHTWHITE_EX}{message}\n')
 
 
-def print_array_result(message):
-    print(f'\n{Style.BRIGHT}{Fore.GREEN}Array result:')
-    print(f'{message}\n\n')
+def print_blue_result(message, result):
+    print(f'\n{Style.BRIGHT}{Fore.CYAN}{message}:')
+    print(f'{result}')
+
+
+def print_green_result(message, result):
+    print(f'\n{Style.BRIGHT}{Fore.GREEN}{message}:')
+    print(f'{result}')
+
+def print_end_process():
+    print(f'\n{Style.BRIGHT}{Fore.YELLOW}End process')

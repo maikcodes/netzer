@@ -1,4 +1,4 @@
-from .middleware import on_select
+from .middleware import on_select, restart_table
 from scanner import host_scanner
 import tkinter as tk
 from tkinter import ttk, Entry, Button, Frame, Label, Scrollbar
@@ -13,6 +13,8 @@ def scan_hosts(network, ports):
 
 
 def refresh_table(table, data):
+    restart_table(table)
+
     global table_panel
     row_index = 1
 
@@ -44,7 +46,8 @@ def create_form_panel(parent):
 
     scan_button = Button(
         form_panel, text="SCAN",
-        command=lambda: scan_hosts(network_entry.get(), ports_entry.get()), background='#4dff88', font='20'
+        command=lambda: scan_hosts(network_entry.get(), ports_entry.get()),
+        background='#4dff88', font='20'
     )
     scan_button.pack(side='left')
 
@@ -104,7 +107,7 @@ def table_structure(table):
     table.column('hostname', anchor=tk.CENTER)
     table.column('hostname_type', anchor=tk.CENTER)
     table.column('protocol', anchor=tk.CENTER, width='60')
-    table.column('port', anchor=tk.CENTER, width='30')
+    table.column('port', anchor=tk.CENTER, width='50')
     table.column('name', anchor=tk.CENTER)
     table.column('state', anchor=tk.CENTER, width='50')
     table.column('product', anchor=tk.CENTER, stretch=tk.YES, width='200')

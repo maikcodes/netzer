@@ -1,14 +1,29 @@
 import nmap
-from .messages import print_process, print_result, print_array_result
+from .messages import *
+from .middleware import generate_scan_ranges
 
-DEFAULT_HOSTS = '127.0.0.1'
-DEFAULT_PORTS = '80'
+INDEX_HEADER = 0
 
 
-def host_scanner(hosts=DEFAULT_HOSTS, ports=DEFAULT_PORTS):
+def host_scanner(hosts, ports):
     scanner = nmap.PortScanner()
-    scanner.scan(hosts=hosts, ports=ports)
-    return scanner
+
+    if (ports.count('-') == 0):
+        scanner.scan(hosts=hosts, ports=ports)
+        scan_result = convert_to_array(scanner)
+        return scan_result
+
+    scan_range_list = generate_scan_ranges(ports)
+
+    scan_results = []
+    for current_range in scan_range_list:
+        print_processing(f'Current scanning range: {current_range}')
+        scanner.scan(hosts=hosts, arguments=f'-p {current_range}')
+        scan_result = convert_to_array(scanner)
+        for scan_port_result in scan_result:
+            scan_results.append(scan_port_result)
+
+    return scan_results
 
 
 def split_elements(ports_list):
@@ -22,11 +37,12 @@ def split_elements(ports_list):
 
 def convert_to_array(scan_result):
     try:
-        ports_csv = scan_result.csv()
-        print_result(f'{ports_csv}')
-        ports_list = ports_csv.split('\r\n')
+        global INDEX_HEADER
+        port_csv_data = scan_result.csv()
+        print_blue_result('Scan result (csv)', port_csv_data)
+        ports_list = port_csv_data.split('\r\n')
         ports_list_cleaned = list(filter(('').__ne__, ports_list))
-        ports_list_cleaned.pop(0)
+        ports_list_cleaned.pop(INDEX_HEADER)
         ports_array = split_elements(ports_list_cleaned)
         return ports_array
     except:
@@ -34,8 +50,8 @@ def convert_to_array(scan_result):
 
 
 def scan(hosts, ports):
-    print_process(f'Scanning HOST:{hosts}, PORTS: [{ports}]')
+    print_process(f'Scanning HOST: {hosts}, PORTS: [{ports}]')
     scan_result = host_scanner(hosts, ports)
-    scan_result_array = convert_to_array(scan_result)
-    print_array_result(scan_result_array)
-    return scan_result_array
+    print_green_result('Scan result (array)', scan_result)
+    print_end_process()
+    return scan_result

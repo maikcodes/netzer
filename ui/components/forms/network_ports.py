@@ -1,4 +1,4 @@
-from .middleware import on_select
+from .middleware import on_select, restart_table
 from scanner import network_scanner
 import tkinter as tk
 from tkinter import Entry, Button, Frame, Label, Scrollbar
@@ -15,6 +15,8 @@ def scan_network(network, subnet_mask, ports):
 
 
 def refresh_table(table, data):
+    restart_table(table)
+
     global table_panel
     row_index = 1
 

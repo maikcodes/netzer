@@ -1,4 +1,4 @@
-from .middleware import on_select
+from .middleware import on_select, restart_table
 from scanner import network_scanner
 import tkinter as tk
 from tkinter import Entry, Button, Frame, Label, Scrollbar
@@ -15,6 +15,8 @@ def scan_network(network, subnet_mask):
 
 
 def refresh_table(table, data):
+    restart_table(table)
+
     global table_panel
     row_index = 1
 
@@ -27,7 +29,6 @@ def refresh_table(table, data):
 
 
 def create_form_panel(parent):
-
     form_panel = Frame(parent, bg='#212d40', borderwidth=50)
 
     network_label = Label(
@@ -43,13 +44,6 @@ def create_form_panel(parent):
     subnet_label.pack(side='left', padx=2, pady=10)
     subnet_entry = Entry(form_panel, font='18')
     subnet_entry.pack(side='left', padx=10, pady=10)
-
-    ports_label = Label(
-        form_panel, text='Ports:', background='#212d40', fg='white', font='15'
-    )
-    ports_label.pack(side='left', padx=2, pady=10)
-    ports_entry = Entry(form_panel, font='18')
-    ports_entry.pack(side='left', padx=10, pady=10)
 
     scan_button = Button(
         form_panel, text='SCAN',
@@ -96,10 +90,10 @@ def table_structure(table):
     table.heading('os_version', text='Version', anchor='center')
 
     table.column('#0', width='0', stretch=tk.NO)
-    table.column('index', anchor='center', width='30')
-    table.column('host', anchor='center', width='100')
-    table.column('state', anchor='center', width='30')
-    table.column('os', anchor='center', width='200')
+    table.column('index', anchor='center', width='50')
+    table.column('host', anchor='center', width='150')
+    table.column('state', anchor='center', width='50')
+    table.column('os', anchor='center', width='500')
     table.column('os_version', anchor='center')
 
 

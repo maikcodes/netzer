@@ -1,11 +1,12 @@
 import nmap
 from .middleware import mask_to_bits
+from .messages import print_process, print_end_process
 
 
 def network_scanner(network, subnet_mask):
     hosts = f'{network}/{subnet_mask}'
     nm = nmap.PortScanner()
-    arguments = '-O -sV -sS'
+    arguments = '-O -sS'
     nm.scan(hosts=hosts, arguments=arguments)
     host_list = [(x, nm[x]) for x in nm.all_hosts()]
 
@@ -17,6 +18,7 @@ def convert_to_array(scan_result):
     for host in scan_result:
         host_data = []
         operative_system_match = host[1]['osmatch']
+
         if len(operative_system_match) < 1:
             host_data.append(host[0])
             host_data.append(host[1]['status']['state'])
@@ -27,16 +29,16 @@ def convert_to_array(scan_result):
 
         host_data.append(host[0])
         host_data.append(host[1]['status']['state'])
-        print(operative_system_match)
         host_data.append(operative_system_match[0]['name'])
         host_data.append(operative_system_match[0]['osclass'][0]['osgen'])
         hosts_data.append(host_data)
-        print(f'\n\n{host_data}\n{hosts_data}')
     return hosts_data
 
 
 def scan(network, subnet_mask):
     subnet_mask_bits = mask_to_bits(subnet_mask)
+    print_process(f'Scanning NETWORK: {network}/{subnet_mask_bits}')
     scan_result = network_scanner(network, subnet_mask_bits)
     scan_result_array = convert_to_array(scan_result)
+    print_end_process()
     return scan_result_array

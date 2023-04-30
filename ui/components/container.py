@@ -6,25 +6,21 @@ from tkinter import ttk
 def configure_container():
     notebook_style = ttk.Style()
     notebook_style.layout('TNotebook.Tab', [])
-    notebook_style.theme_create(themename='dark_mode', settings={
-        "TNotebook.Tab": {
-            "configure": {'borderwidth': 0},
-            "layout": [("Notebook.tab", {"sticky": "nswe"})],
-        },
-        "TNotebook": {
-            "configure": {"borderwidth": 0},
+    notebook_style.theme_create(
+        themename='dark_mode', settings={
+            "TNotebook.Tab": {
+                "configure": {'borderwidth': 0},
+                "layout": [("Notebook.tab", {"sticky": "nswe"})],
+            },
+            "TNotebook": {
+                "configure": {"borderwidth": 0},
+            }
         }
-    })
+    )
     notebook_style.theme_use('dark_mode')
 
 
 def create_forms(notebook):
-    home_tab = ttk.Frame(notebook)
-    home.create_form_panel(home_tab)
-    home.create_table_panel(home_tab)
-    notebook.add(home_tab, text='Home')
-    home.create(home_tab)
-
     network_tab = ttk.Frame(notebook)
     network.create_form_panel(network_tab)
     network.create_table_panel(network_tab)
@@ -43,7 +39,6 @@ def create_forms(notebook):
     ports_list.create(ports_list_tab)
 
     tabs = {
-        'home': home_tab,
         'network': network_tab,
         'host': host_tab,
         'ports_list': ports_list_tab
