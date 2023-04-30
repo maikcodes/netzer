@@ -1,6 +1,6 @@
 # __NetZer Desktop__
 
-This is `NetZer desktop` a network analyzer, you can use it to scan a single host or hosts i network.
+This is `NetZer desktop` a network analyzer, you can use it to scan a single host or hosts in network.
 
 ## __How to use host scanner__
 
