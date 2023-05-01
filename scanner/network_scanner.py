@@ -5,10 +5,10 @@ from .messages import print_process, print_end_process
 
 def network_scanner(network, subnet_mask):
     hosts = f'{network}/{subnet_mask}'
-    nm = nmap.PortScanner()
+    scanner = nmap.PortScanner()
     arguments = '-O -sS'
-    nm.scan(hosts=hosts, arguments=arguments)
-    host_list = [(x, nm[x]) for x in nm.all_hosts()]
+    scanner.scan(hosts=hosts, arguments=arguments)
+    host_list = [(x, scanner[x]) for x in scanner.all_hosts()]
 
     return host_list
 
