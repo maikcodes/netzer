@@ -8,6 +8,11 @@ INDEX_HEADER = 0
 def host_scanner(hosts, ports):
     scanner = nmap.PortScanner()
 
+    if (ports == ''):
+        scanner.scan(hosts=hosts, arguments='-p-')
+        scan_result = convert_to_array(scanner)
+        return scan_result
+
     if (ports.count('-') == 0):
         scanner.scan(hosts=hosts, ports=ports)
         scan_result = convert_to_array(scanner)
