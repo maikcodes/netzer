@@ -11,7 +11,7 @@ def host_scanner(hosts, ports):
     # si no se especifica puerto, escanear los activos
     if (ports == ''):
         # ecanear todos los puertos activos
-        scanner.scan(hosts=hosts, arguments='-p-')
+        scanner.scan(hosts=hosts, arguments='-p- -sV')
         scan_result = convert_to_array(scanner)
         return scan_result
     
@@ -34,7 +34,7 @@ def host_scanner(hosts, ports):
         print_processing(f'Current scanning range: {current_range}')
 
         # escanea el rango actual de la lista
-        scanner.scan(hosts=hosts, arguments=f'-p {current_range}')
+        scanner.scan(hosts=hosts, arguments=f'-p {current_range} -sV')
         scan_result = convert_to_array(scanner)
 
         # agregar el resultado del escaneo de cada rango
