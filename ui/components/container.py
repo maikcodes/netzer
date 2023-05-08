@@ -6,14 +6,16 @@ from tkinter import ttk
 def configure_container():
     notebook_style = ttk.Style()
     notebook_style.layout('TNotebook.Tab', [])
+    # crea un nuevo estilo para el contenedor (estilo de notebook)
     notebook_style.theme_create(
+        # crea el tema especifico nombrado dark_mode y sus configuraciones
         themename='dark_mode', settings={
             "TNotebook.Tab": {
-                "configure": {'borderwidth': 0},
-                "layout": [("Notebook.tab", {"sticky": "nswe"})],
+                "configure": {'borderwidth': 0}, # quita el borde de los tabs del notebook
+                "layout": [("Notebook.tab", {"sticky": "nswe"})], # quita los tabs del notebook
             },
             "TNotebook": {
-                "configure": {"borderwidth": 0},
+                "configure": {"borderwidth": 0}, # quita el borde de todo el notebook
             }
         }
     )
@@ -48,9 +50,14 @@ def create_forms(notebook):
 
 
 def start(window):
+    # crea un contenedor (notebook)
     notebook = ttk.Notebook(window)
+    # configura el contenedor, para el estilo
     configure_container()
+    # crea los formularios del contendor, 
+    # para el escaneo de red, host y info de puertos
     tabs = create_forms(notebook)
 
+    # inicia el menu lateral izquierdo
     side_menu.start(window, notebook, tabs)
     notebook.pack(expand=True, fill='both')

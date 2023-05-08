@@ -27,10 +27,10 @@ def get_geometry(width, height):
 
 def start():
     main_window.title("NetZer")
-    main_window.state('zoomed')
+    # main_window.state('zoomed')
     window_width, window_height = get_screen_size()
     main_window.minsize((window_width-200), (window_height-200))
     main_window.configure(background='#11151c')
     container.start(main_window)
-    main_window.iconbitmap('ui/img/icons/icon.ico')
+    # main_window.iconbitmap('ui/img/icons/icon.ico')
     main_window.mainloop()
